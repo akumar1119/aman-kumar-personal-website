@@ -1,16 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Brain, Target, Link2 } from "lucide-react";
 import { VALUE_PROPS } from "@/lib/constants";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
-
-const ICON_MAP = {
-  "AI-Powered Prospecting": Brain,
-  "Full-Cycle Selling": Target,
-  "EDI & Supply Chain SaaS": Link2,
-} as const;
 
 function ValueCard({
   title,
@@ -18,92 +8,81 @@ function ValueCard({
   tools,
   size,
   index,
+  isSpotlight,
 }: {
   title: string;
   description: string;
   tools: readonly string[];
   size: "medium" | "large";
   index: number;
+  isSpotlight: boolean;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const Icon = ICON_MAP[title as keyof typeof ICON_MAP];
-
   return (
-    <motion.div
-      variants={fadeInUp}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    <div
+      className={`reveal${isSpotlight ? " card--spotlight" : ""}`}
       style={{
-        background: isHovered ? "var(--color-surface-3)" : "var(--color-surface)",
-        border: "1px solid var(--color-border)",
+        "--i": index,
+        background: isSpotlight ? undefined : "var(--bg-surface)",
+        border: isSpotlight ? undefined : "1px solid var(--border-subtle)",
         borderRadius: "var(--radius-lg)",
-        padding:
-          size === "large"
-            ? "var(--space-8)"
-            : "var(--space-6)",
-        boxShadow: isHovered ? "var(--shadow-glow)" : "none",
-        transition: "background var(--transition), box-shadow var(--transition)",
+        padding: size === "large" ? "var(--space-8)" : "var(--space-6)",
         display: "flex",
         flexDirection: "column",
         gap: "var(--space-4)",
-        ...(size === "large"
-          ? { justifyContent: "center", gridRow: "span 2" }
-          : {}),
         cursor: "default",
+        transition: "border-color 200ms, box-shadow 200ms",
+      } as React.CSSProperties}
+      onMouseEnter={(e) => {
+        if (!isSpotlight) {
+          e.currentTarget.style.borderColor = "var(--border-accent)";
+          e.currentTarget.style.boxShadow = "0 0 20px var(--blue-glow)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isSpotlight) {
+          e.currentTarget.style.borderColor = "var(--border-subtle)";
+          e.currentTarget.style.boxShadow = "none";
+        }
       }}
     >
-      {/* Title with icon */}
-      <div
+      {/* Title — no icon (RULE 4) */}
+      <h3
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--space-3)",
+          fontSize: size === "large" ? "var(--text-xl)" : "var(--text-base)",
+          fontWeight: 700,
+          color: "var(--text-primary)",
+          lineHeight: 1.3,
+          position: "relative",
+          zIndex: 1,
         }}
       >
-        {Icon && (
-          <Icon
-            size={size === "large" ? 22 : 18}
-            style={{
-              color: "var(--color-accent)",
-              flexShrink: 0,
-            }}
-          />
-        )}
-        <h3
-          style={{
-            fontSize: size === "large" ? "var(--text-xl)" : "var(--text-base)",
-            fontWeight: 700,
-            color: "var(--color-text)",
-            lineHeight: 1.3,
-          }}
-        >
-          {title}
-        </h3>
-      </div>
+        {title}
+      </h3>
 
       {/* Description */}
       <p
         style={{
-          fontSize: "var(--text-sm)",
-          color: "var(--color-text-muted)",
+          fontSize: size === "large" ? "var(--text-base)" : "var(--text-sm)",
+          color: "var(--text-secondary)",
           lineHeight: 1.7,
-          ...(size === "large"
-            ? { fontSize: "var(--text-base)" }
-            : {}),
+          position: "relative",
+          zIndex: 1,
         }}
       >
         {description}
       </p>
 
-      {/* Tagline for EDI card */}
-      {title === "EDI & Supply Chain SaaS" && (
+      {/* Tagline for spotlight card */}
+      {isSpotlight && (
         <p
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: "var(--text-xs)",
-            color: "var(--color-accent)",
+            color: "var(--blue-bright)",
             fontStyle: "italic",
             marginTop: "var(--space-2)",
+            position: "relative",
+            zIndex: 1,
           }}
         >
           &quot;The niche almost no AE candidate owns.&quot;
@@ -118,107 +97,95 @@ function ValueCard({
             flexWrap: "wrap",
             gap: "var(--space-2)",
             marginTop: "auto",
+            position: "relative",
+            zIndex: 1,
           }}
         >
           {tools.map((tool) => (
-            <span
-              key={tool}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-xs)",
-                color: "var(--color-text-muted)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "9999px",
-                padding: "var(--space-1) var(--space-3)",
-                background: "var(--color-surface-2)",
-              }}
-            >
+            <span key={tool} className="badge">
               {tool}
             </span>
           ))}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }
 
-export default function ValueProps({ className }: { className?: string }) {
+export default function ValueProps() {
   return (
-    <section
-      id="work"
-      className={className}
-      style={{
-        padding: "var(--space-20) var(--space-4)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {/* Terminal label */}
-      <motion.p
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
-        style={{
-          fontFamily: "var(--font-mono)",
-          color: "var(--color-accent)",
-          fontSize: "var(--text-sm)",
-          marginBottom: "var(--space-8)",
-          textAlign: "center",
-        }}
-      >
-        {">"} // 04 — SELECT capabilities FROM skillset;
-      </motion.p>
+    <section id="work">
+      <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+        {/* Section number + label */}
+        <div className="section-header reveal">
+          <span className="section-number">04</span>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-xs)",
+              color: "var(--text-muted)",
+              letterSpacing: "0.12em",
+              marginTop: "var(--space-2)",
+            }}
+          >
+            WHAT I DO
+          </p>
+        </div>
 
-      {/* Asymmetric 2+1 grid */}
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: "var(--space-6)",
-          maxWidth: 960,
-          width: "100%",
-        }}
-        className="value-props-grid"
-      >
-        {VALUE_PROPS.map((prop, index) => (
-          <ValueCard
-            key={prop.title}
-            title={prop.title}
-            description={prop.description}
-            tools={prop.tools}
-            size={prop.size}
-            index={index}
-          />
-        ))}
-      </motion.div>
+        {/* Asymmetric bento grid: 2+1 */}
+        <div className="reveal-children">
+          {/* Row 1: Prospecting (left) | EDI spotlight (right, spans 2 rows) */}
+          <div
+            className="value-grid"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr",
+              gap: "var(--space-6)",
+            }}
+          >
+            {VALUE_PROPS.map((prop, index) => (
+              <div
+                key={prop.title}
+                className="value-grid-item"
+                style={{
+                  gridRow: prop.size === "large" ? "span 2" : undefined,
+                }}
+              >
+                <ValueCard
+                  title={prop.title}
+                  description={prop.description}
+                  tools={prop.tools}
+                  size={prop.size}
+                  index={index}
+                  isSpotlight={prop.size === "large"}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      {/* Responsive styles */}
+      {/* Responsive bento grid */}
       <style jsx global>{`
         @media (min-width: 768px) {
-          .value-props-grid {
+          .value-grid {
             grid-template-columns: 1fr 1fr !important;
           }
-          .value-props-grid > *:nth-child(1) {
+          .value-grid-item:nth-child(1) {
             grid-column: 1 !important;
             grid-row: 1 !important;
           }
-          .value-props-grid > *:nth-child(2) {
+          .value-grid-item:nth-child(2) {
             grid-column: 1 !important;
             grid-row: 2 !important;
           }
-          .value-props-grid > *:nth-child(3) {
+          .value-grid-item:nth-child(3) {
             grid-column: 2 !important;
             grid-row: 1 / 3 !important;
           }
         }
         @media (max-width: 767px) {
-          .value-props-grid > *:nth-child(3) {
+          .value-grid-item:nth-child(3) {
             grid-row: auto !important;
           }
         }

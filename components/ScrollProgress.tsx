@@ -17,7 +17,7 @@ export default function ScrollProgress() {
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Set initial value
+    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

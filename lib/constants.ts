@@ -4,6 +4,7 @@ export const LINKS = {
   phone: "+1 (289) 407-6092",
   github: "https://github.com/akumar1119",
   resume: "/resume.pdf",
+  dashboard: "https://aman-fy-25-year-end-review-interact.vercel.app/",
   calendly: "#", // placeholder
 } as const;
 
@@ -30,12 +31,12 @@ export const METRICS = [
   },
   {
     label: "FULL-CYCLE CLOSED",
-    value: 10,
-    prefix: "₹",
-    displayValue: "₹10M",
-    suffix: "M",
+    value: 160,
+    prefix: "~",
+    displayValue: "~160K CAD",
+    suffix: "K CAD",
     progress: 100,
-    progressLabel: "~$160K CAD",
+    progressLabel: "Selling Ed-tech solutions",
     trend: "up" as const,
   },
   {
@@ -156,8 +157,8 @@ export const PROFILE = {
 export const NAV_LINKS = [
   { label: "Home", href: "#home" },
   { label: "Numbers", href: "#numbers" },
-  { label: "Profile", href: "#profile" },
   { label: "Career", href: "#career" },
+  { label: "Work", href: "#work" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
@@ -213,17 +214,22 @@ export const OFF_CLOCK = [
   {
     icon: "✈️",
     title: "India → Canada",
-    description: "Engineer who chose sales. Never looked back.",
+    description: "Engineer who chose sales over code. Built a new life in Toronto and never looked back.",
   },
   {
-    icon: "🤖",
-    title: "Building in Public",
-    description: "AI workflows, content engines, and this website.",
+    icon: "🔧",
+    title: "Shipping Side Projects",
+    description: "AI sales tools, content engines, and this website — built with Claude Code and late-night ambition.",
   },
   {
-    icon: "🧠",
-    title: "Always Learning",
-    description: "Currently: testing Claude's new Artifacts export for prospect one-pagers.",
+    icon: "🎵",
+    title: "Jamming & Dancing",
+    description: "Nothing clears the mind like singing with friends or losing yourself on the dance floor.",
+  },
+  {
+    icon: "🌍",
+    title: "Always Travelling",
+    description: "New city, culture, or cuisine to discover — I'm booking the flight.",
   },
 ] as const;
 

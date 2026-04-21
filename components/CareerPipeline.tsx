@@ -1,9 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { CAREER } from "@/lib/constants";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 function DealCard({
   stage,
@@ -28,23 +25,6 @@ function DealCard({
   isTarget: boolean;
   index: number;
 }) {
-  const cardStyle: React.CSSProperties = {
-    background: "var(--color-surface)",
-    border: isTarget
-      ? "2px solid var(--color-primary)"
-      : "1px solid var(--color-border)",
-    borderRadius: "var(--radius-lg)",
-    boxShadow: isTarget ? "var(--shadow-glow)" : "var(--shadow-sm)",
-    overflow: "hidden",
-    ...(isTarget
-      ? {
-          background:
-            "linear-gradient(135deg, var(--color-surface), rgba(37, 99, 235, 0.05))",
-        }
-      : {}),
-  };
-
-  // Split dates to highlight "Present"
   const renderDates = () => {
     if (!isCurrent || !dates.includes("Present")) {
       return <>{dates}</>;
@@ -53,336 +33,400 @@ function DealCard({
     return (
       <>
         {parts[0]}
-        <span style={{ color: "var(--color-accent)" }}>Present</span>
+        <span style={{ color: "var(--blue-bright)" }}>Present</span>
       </>
     );
   };
 
-  return (
-    <motion.div
-      variants={fadeInUp}
-      style={{
-        ...cardStyle,
-        padding: "var(--space-6)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "var(--space-3)",
-        minHeight: 220,
-        position: "relative",
-      }}
-    >
-      {/* Step number badge — top right */}
-      <span
-        style={{
-          position: "absolute",
-          top: "var(--space-4)",
-          right: "var(--space-4)",
-          fontFamily: "var(--font-mono)",
-          fontSize: "var(--text-xs)",
-          color: "var(--color-text-faint)",
-          lineHeight: 1,
-        }}
-      >
-        {String(index + 1).padStart(2, "0")}
-      </span>
-
-      {/* Stage badge */}
+  if (isTarget) {
+    return (
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--space-2)",
-          fontFamily: "var(--font-mono)",
-          fontSize: "var(--text-xs)",
-          letterSpacing: "0.08em",
-          color: "var(--color-text-muted)",
-        }}
+        className="pipeline-card pipeline-card--target reveal"
+        style={{ "--i": index } as React.CSSProperties}
       >
-        <span
-          style={{
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            background: stageColor,
-            flexShrink: 0,
-            ...(isCurrent
-              ? {
-                  animation: "pulse-glow 2s ease-in-out infinite",
-                }
-              : {}),
-          }}
-        />
-        {stage}
-        {isCurrent && (
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--space-1)",
-              color: "var(--color-accent)",
-              fontSize: "var(--text-xs)",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
+        <div className="pipeline-card-inner">
+          <div className="pipeline-card-front" style={{ justifyContent: "center", alignItems: "center", textAlign: "center" }}>
+            {/* Step number */}
             <span
               style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "var(--color-success)",
-                animation: "pulse-glow 2s ease-in-out infinite",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
+                color: "var(--text-ghost)",
+                marginBottom: "var(--space-4)",
+                display: "block",
+              }}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "var(--space-2)",
+                marginBottom: "var(--space-4)",
+              }}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  background: "var(--blue-core)",
+                }}
+              />
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-xs)",
+                  letterSpacing: "0.08em",
+                  color: "var(--blue-bright)",
+                }}
+              >
+                TARGET
+              </span>
+            </div>
+
+            <h3
+              style={{
+                fontSize: "var(--text-lg)",
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                lineHeight: 1.2,
+                marginBottom: "var(--space-2)",
+              }}
+            >
+              {company}
+            </h3>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-muted)",
+                marginBottom: "var(--space-4)",
+              }}
+            >
+              {role}
+            </p>
+
+            <div
+              style={{
+                width: "100%",
+                height: "1px",
+                background: "var(--border-faint)",
+                marginBottom: "var(--space-4)",
               }}
             />
-            ACTIVE
-          </span>
-        )}
-      </div>
 
-      {/* Company */}
-      <h3
-        style={{
-          fontSize: "var(--text-lg)",
-          fontWeight: 700,
-          color: "var(--color-text)",
-          lineHeight: 1.2,
-        }}
-      >
-        {company}
-      </h3>
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              {win}
+              <span
+                style={{
+                  display: "inline-block",
+                  width: "2px",
+                  height: "1em",
+                  background: "var(--blue-bright)",
+                  animation: "blink 1s step-end infinite",
+                }}
+              />
+            </p>
+          </div>
 
-      {/* Role */}
-      <p
-        style={{
-          fontSize: "var(--text-sm)",
-          color: "var(--color-text-muted)",
-          lineHeight: 1.5,
-        }}
-      >
-        {role}
-      </p>
-
-      {/* Dates */}
-      <p
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: "var(--text-xs)",
-          color: "var(--color-text-faint)",
-        }}
-      >
-        {renderDates()}
-      </p>
-
-      {/* Key win + metric — always visible */}
-      {!isTarget && (
-        <div
-          style={{
-            marginTop: "auto",
-            borderTop: "1px solid var(--color-divider)",
-            paddingTop: "var(--space-3)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-2)",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "var(--text-sm)",
-              color: "var(--color-text)",
-              lineHeight: 1.6,
-            }}
-          >
-            {win}
-          </p>
-          {metric && (
+          <div className="pipeline-card-back">
             <p
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--text-sm)",
-                color: "var(--color-accent)",
-                fontWeight: 600,
+                color: "var(--text-primary)",
+                textAlign: "center",
+                lineHeight: 1.6,
               }}
             >
-              {metric}
+              Next deal.
+              <br />
+              Actively in conversation.
             </p>
-          )}
+          </div>
         </div>
-      )}
-
-      {/* Target card special content */}
-      {isTarget && (
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "var(--text-xs)",
-            color: "var(--color-text-muted)",
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-            marginTop: "auto",
-          }}
-        >
-          {win}
-          <span
-            style={{
-              display: "inline-block",
-              width: 2,
-              height: "1em",
-              background: "var(--color-accent)",
-              animation: "blink 1s step-end infinite",
-            }}
-          />
-        </p>
-      )}
-    </motion.div>
-  );
-}
-
-function PipelineConnector() {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+      </div>
+    );
+  }
 
   return (
     <div
-      ref={ref}
-      style={{
-        position: "absolute",
-        top: 40,
-        left: 0,
-        right: 0,
-        height: 2,
-        overflow: "hidden",
-        pointerEvents: "none",
-        zIndex: 0,
-      }}
+      className="pipeline-card reveal"
+      style={{ "--i": index } as React.CSSProperties}
     >
-      <motion.div
-        initial={{ width: "0%" }}
-        animate={isInView ? { width: "100%" } : { width: "0%" }}
-        transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          height: "100%",
-          background: "var(--color-primary)",
-          opacity: 0.4,
-          borderRadius: 1,
-        }}
-      />
+      <div className="pipeline-card-inner">
+        {/* Front face */}
+        <div className="pipeline-card-front">
+          {/* Step number */}
+          <span
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-xs)",
+              color: "var(--text-ghost)",
+              marginBottom: "var(--space-2)",
+              display: "block",
+            }}
+          >
+            {String(index + 1).padStart(2, "0")}
+          </span>
+
+          {/* Stage */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--space-2)",
+              marginBottom: "var(--space-3)",
+            }}
+          >
+            <span
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: stageColor,
+                flexShrink: 0,
+                ...(isCurrent ? { animation: "pulse-glow 2s ease-in-out infinite" } : {}),
+              }}
+            />
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
+                letterSpacing: "0.08em",
+                color: "var(--text-muted)",
+              }}
+            >
+              {stage}
+            </span>
+            {isCurrent && (
+              <span
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "var(--space-1)",
+                  color: "var(--blue-bright)",
+                  fontSize: "var(--text-xs)",
+                  fontFamily: "var(--font-mono)",
+                }}
+              >
+                <span
+                  style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: "var(--green)",
+                    animation: "pulse-glow 2s ease-in-out infinite",
+                  }}
+                />
+                ACTIVE
+              </span>
+            )}
+          </div>
+
+          {/* Company */}
+          <h3
+            style={{
+              fontSize: "var(--text-lg)",
+              fontWeight: 700,
+              color: "var(--text-primary)",
+              lineHeight: 1.2,
+              marginBottom: "var(--space-1)",
+            }}
+          >
+            {company}
+          </h3>
+
+          {/* Role */}
+          <p
+            style={{
+              fontSize: "var(--text-sm)",
+              color: "var(--text-muted)",
+              lineHeight: 1.5,
+            }}
+          >
+            {role}
+          </p>
+
+          {/* Dates */}
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-xs)",
+              color: "var(--text-ghost)",
+              marginTop: "auto",
+            }}
+          >
+            {renderDates()}
+          </p>
+
+          {/* Hover hint */}
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              color: "var(--text-ghost)",
+              marginTop: "var(--space-2)",
+              opacity: 0.6,
+            }}
+          >
+            Hover to reveal &rarr;
+          </p>
+        </div>
+
+        {/* Back face */}
+        <div className="pipeline-card-back">
+          <div style={{ textAlign: "center" }}>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                letterSpacing: "0.08em",
+                display: "block",
+                marginBottom: "var(--space-3)",
+              }}
+            >
+              {stage}
+            </span>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-primary)",
+                lineHeight: 1.6,
+                marginBottom: "var(--space-4)",
+              }}
+            >
+              {win}
+            </p>
+            {metric && (
+              <p
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--blue-bright)",
+                  fontWeight: 600,
+                }}
+              >
+                {metric}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default function CareerPipeline({ className }: { className?: string }) {
+export default function CareerPipeline() {
   return (
-    <section
-      id="career"
-      className={className}
-      style={{
-        padding: "var(--space-20) var(--space-4)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      {/* Terminal label */}
-      <motion.p
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
-        style={{
-          fontFamily: "var(--font-mono)",
-          color: "var(--color-accent)",
-          fontSize: "var(--text-sm)",
-          marginBottom: "var(--space-8)",
-          textAlign: "center",
-        }}
-      >
-        {">"} // 03 — SELECT * FROM career_pipeline
-      </motion.p>
-
-      {/* Stage headers (desktop) */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: "var(--space-4)",
-          maxWidth: 1200,
-          width: "100%",
-          marginBottom: "var(--space-6)",
-        }}
-        className="career-stage-headers"
-      >
-        {CAREER.map((deal) => (
-          <div
-            key={deal.stage}
+    <section id="career" className="section-alt">
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* Section number + label */}
+        <div className="section-header reveal">
+          <span className="section-number">03</span>
+          <p
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-xs)",
-              color: "var(--color-text-faint)",
-              letterSpacing: "0.1em",
-              textAlign: "center",
+              color: "var(--text-muted)",
+              letterSpacing: "0.12em",
+              marginTop: "var(--space-2)",
             }}
           >
-            {deal.stage}
-          </div>
-        ))}
-      </motion.div>
+            CAREER PIPELINE
+          </p>
+        </div>
 
-      {/* Pipeline connector (desktop) */}
-      <motion.div
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        style={{
-          position: "relative",
-          maxWidth: 1200,
-          width: "100%",
-          marginBottom: "var(--space-4)",
-        }}
-        className="career-connector-desktop"
-      >
-        <PipelineConnector />
-      </motion.div>
+        {/* Stage headers (desktop) */}
+        <div
+          className="career-stage-headers"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gap: "var(--space-4)",
+            marginBottom: "var(--space-6)",
+          }}
+        >
+          {CAREER.map((deal) => (
+            <div
+              key={deal.stage}
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
+                color: "var(--text-ghost)",
+                letterSpacing: "0.1em",
+                textAlign: "center",
+              }}
+            >
+              {deal.stage}
+            </div>
+          ))}
+        </div>
 
-      {/* Deal cards grid */}
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: "var(--space-4)",
-          maxWidth: 1200,
-          width: "100%",
-        }}
-        className="career-cards-grid"
-      >
-        {CAREER.map((deal, index) => (
-          <DealCard
-            key={deal.stage}
-            stage={deal.stage}
-            stageColor={deal.stageColor}
-            company={deal.company}
-            role={deal.role}
-            dates={deal.dates}
-            win={deal.win}
-            metric={deal.metric}
-            isCurrent={deal.isCurrent}
-            isTarget={deal.isTarget}
-            index={index}
+        {/* Connector line (desktop) */}
+        <div
+          className="career-connector"
+          style={{
+            position: "relative",
+            marginBottom: "var(--space-4)",
+            height: "2px",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "10%",
+              right: "10%",
+              height: "100%",
+              background: "linear-gradient(90deg, var(--blue-core), var(--blue-bright), var(--border-subtle) 85%, transparent)",
+              opacity: 0.4,
+              borderRadius: "1px",
+            }}
           />
-        ))}
-      </motion.div>
+        </div>
+
+        {/* Deal cards grid */}
+        <div
+          className="career-cards-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(5, 1fr)",
+            gap: "var(--space-4)",
+          }}
+        >
+          {CAREER.map((deal, index) => (
+            <DealCard
+              key={deal.stage}
+              stage={deal.stage}
+              stageColor={deal.stageColor}
+              company={deal.company}
+              role={deal.role}
+              dates={deal.dates}
+              win={deal.win}
+              metric={deal.metric}
+              isCurrent={deal.isCurrent}
+              isTarget={deal.isTarget}
+              index={index}
+            />
+          ))}
+        </div>
+      </div>
 
       {/* Responsive styles */}
       <style jsx global>{`
-        /* 3-column at 1024-1279px */
         @media (min-width: 1024px) and (max-width: 1279px) {
           .career-stage-headers {
             grid-template-columns: repeat(3, 1fr) !important;
@@ -390,27 +434,23 @@ export default function CareerPipeline({ className }: { className?: string }) {
           .career-cards-grid {
             grid-template-columns: repeat(3, 1fr) !important;
           }
+          .career-connector {
+            display: none !important;
+          }
         }
-        /* Below 1024px: single column with timeline */
         @media (max-width: 1023px) {
           .career-stage-headers {
-            grid-template-columns: 1fr !important;
-            gap: var(--space-2) !important;
-            margin-bottom: var(--space-6) !important;
+            display: none !important;
           }
-          .career-stage-headers > div {
-            text-align: left !important;
-            padding-left: var(--space-2);
-          }
-          .career-connector-desktop {
+          .career-connector {
             display: none !important;
           }
           .career-cards-grid {
             grid-template-columns: 1fr !important;
             max-width: 480px !important;
+            margin: 0 auto !important;
             position: relative !important;
           }
-          /* Vertical timeline line */
           .career-cards-grid::before {
             content: "" !important;
             position: absolute !important;
@@ -418,14 +458,13 @@ export default function CareerPipeline({ className }: { className?: string }) {
             top: 0 !important;
             bottom: 0 !important;
             width: 2px !important;
-            background: var(--color-border) !important;
+            background: var(--border-subtle) !important;
             z-index: 0 !important;
           }
           .career-cards-grid > div {
             position: relative !important;
             padding-left: 2.5rem !important;
           }
-          /* Timeline dot on each card */
           .career-cards-grid > div::before {
             content: "" !important;
             position: absolute !important;
@@ -434,8 +473,24 @@ export default function CareerPipeline({ className }: { className?: string }) {
             width: 8px !important;
             height: 8px !important;
             border-radius: 50% !important;
-            background: var(--color-primary) !important;
+            background: var(--blue-core) !important;
             z-index: 1 !important;
+          }
+          .pipeline-card {
+            height: auto !important;
+          }
+          .pipeline-card-inner {
+            transform: none !important;
+          }
+          .pipeline-card:hover .pipeline-card-inner {
+            transform: none !important;
+          }
+          .pipeline-card-back {
+            display: none !important;
+          }
+          .pipeline-card-front {
+            position: relative !important;
+            backface-visibility: visible !important;
           }
         }
       `}</style>

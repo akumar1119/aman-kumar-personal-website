@@ -1,19 +1,18 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import { motion } from "framer-motion";
 import { SKILLS, PROFILE } from "@/lib/constants";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
 
 function SkillBar({
   name,
   level,
   example,
+  index,
 }: {
   name: string;
   level: number;
   example: string;
+  index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -36,18 +35,19 @@ function SkillBar({
   }, []);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      variants={fadeInUp}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className="reveal"
       style={{
-        padding: "var(--space-3) var(--space-4)",
+        "--i": index,
+        padding: "var(--space-2) var(--space-3)",
         borderRadius: "var(--radius-md)",
-        background: isHovered ? "var(--color-surface-3)" : "transparent",
+        background: isHovered ? "var(--bg-highlight)" : "transparent",
         transition: "background var(--transition)",
         cursor: "default",
-      }}
+      } as React.CSSProperties}
     >
       <div
         style={{
@@ -58,355 +58,297 @@ function SkillBar({
           fontFamily: "var(--font-mono)",
         }}
       >
-        <span style={{ color: "var(--color-text)", fontSize: "var(--text-sm)" }}>
+        <span style={{ color: "var(--text-primary)", fontSize: "var(--text-sm)" }}>
           {name}
-        </span>
-        <span
-          style={{
-            color: "var(--color-accent)",
-            fontSize: "var(--text-sm)",
-            fontVariantNumeric: "tabular-nums",
-          }}
-        >
-          {level}%
         </span>
       </div>
 
-      {/* Progress bar */}
+      {/* Progress bar — no percentage */}
       <div
         style={{
           width: "100%",
-          height: 4,
-          background: "var(--color-surface-3)",
-          borderRadius: 2,
+          height: "3px",
+          background: "var(--bg-highlight)",
+          borderRadius: "2px",
           overflow: "hidden",
         }}
       >
-        <motion.div
-          initial={{ width: 0 }}
-          animate={isVisible ? { width: `${level}%` } : { width: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        <div
           style={{
             height: "100%",
-            background: "var(--color-primary)",
-            borderRadius: 2,
+            background: "var(--blue-core)",
+            borderRadius: "2px",
+            width: isVisible ? `${level}%` : "0%",
+            transition: "width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
           }}
         />
       </div>
 
-      {/* Hover example text */}
-      <motion.div
-        initial={false}
-        animate={{
-          height: isHovered ? "auto" : 0,
-          opacity: isHovered ? 1 : 0,
-        }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      {/* Hover example text — replaces percentage */}
+      <div
         style={{
-          overflow: "hidden",
-          fontFamily: "var(--font-mono)",
+          fontFamily: "var(--font-body)",
           fontSize: "var(--text-xs)",
-          color: "var(--color-text-muted)",
+          fontStyle: "italic",
+          color: "var(--text-muted)",
           marginTop: isHovered ? "var(--space-2)" : 0,
+          opacity: isHovered ? 1 : 0,
+          height: isHovered ? "auto" : 0,
+          overflow: "hidden",
+          transition: "opacity 200ms ease, margin 200ms ease",
         }}
       >
         {example}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
-function Divider() {
+export default function ProfileDossier() {
   return (
-    <div
-      style={{
-        height: 1,
-        background: "var(--color-divider)",
-        margin: "1.25rem 0",
-      }}
-    />
-  );
-}
+    <section id="profile">
+      <div style={{ maxWidth: "var(--content-max-width)", margin: "0 auto" }}>
+        {/* Section number + label */}
+        <div className="section-header reveal">
+          <span className="section-number">02</span>
+          <p
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-xs)",
+              color: "var(--text-muted)",
+              letterSpacing: "0.12em",
+              marginTop: "var(--space-2)",
+            }}
+          >
+            cat profile.json
+          </p>
+        </div>
 
-export default function ProfileDossier({ className }: { className?: string }) {
-  return (
-    <section
-      id="profile"
-      className={className}
-      style={{
-        padding: "var(--space-20) var(--space-4)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        position: "relative",
-      }}
-    >
-      {/* Radial gradient spotlight behind the card */}
-      <div
-        style={{
-          position: "absolute",
-          width: 800,
-          height: 800,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          background: "radial-gradient(circle, rgba(37,99,235,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Terminal label */}
-      <motion.p
-        variants={fadeInUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.5 }}
-        style={{
-          fontFamily: "var(--font-mono)",
-          color: "var(--color-accent)",
-          fontSize: "var(--text-sm)",
-          marginBottom: "var(--space-8)",
-          textAlign: "center",
-        }}
-      >
-        {">"} // 02 — cat profile.json
-      </motion.p>
-
-      {/* Card — header + personal fields only */}
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        style={{
-          maxWidth: 720,
-          width: "100%",
-          background: "var(--color-surface)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "var(--radius-lg)",
-          boxShadow: "var(--shadow-glow)",
-          padding: "var(--space-8)",
-        }}
-      >
-        {/* Header */}
-        <motion.div
-          variants={fadeInUp}
+        {/* Unified dossier card */}
+        <div
+          className="reveal"
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "var(--space-3)",
+            background: "var(--bg-surface)",
+            border: "1px solid var(--border-subtle)",
+            borderRadius: "16px",
+            padding: "var(--space-8)",
+            boxShadow: "0 0 0 1px var(--border-faint), 0 -1px 0 0 rgba(37, 99, 235, 0.3), 0 32px 64px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)" }}>
-            <div
-              style={{
-                width: 72,
-                height: 72,
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: "2px solid var(--color-primary)",
-                flexShrink: 0,
-              }}
-            >
-              <Image
-                src="/headshot.png"
-                alt="Aman Kumar"
-                width={72}
-                height={72}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              />
-            </div>
+          {/* Header */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "var(--space-3)",
+              marginBottom: "var(--space-6)",
+              paddingBottom: "var(--space-6)",
+              borderBottom: "1px solid var(--border-faint)",
+            }}
+          >
             <h2
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--text-base)",
                 fontWeight: 600,
-                color: "var(--color-text)",
+                color: "var(--text-primary)",
                 letterSpacing: "0.05em",
               }}
             >
               PROFILE: AMAN KUMAR
             </h2>
-          </div>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "var(--space-2)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-            }}
-          >
             <span
               style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "var(--color-success)",
-                display: "inline-block",
-                animation: "pulse-glow 2s ease-in-out infinite",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "var(--space-2)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
               }}
-            />
-            <span style={{ color: "var(--color-accent)" }}>ACTIVE</span>
-          </span>
-        </motion.div>
-
-        <Divider />
-
-        {/* Fields */}
-        <motion.div
-          variants={staggerContainer}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-3)",
-            fontFamily: "var(--font-mono)",
-          }}
-        >
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Role: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.role}</span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Company: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.company}</span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Location: </span>
-            <span style={{ color: "var(--color-text)" }}>
-              {PROFILE.location} {PROFILE.flag}
-            </span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Target: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.target}</span>
-          </motion.div>
-        </motion.div>
-
-        <Divider />
-
-        {/* Info rows */}
-        <motion.div
-          variants={staggerContainer}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-3)",
-            fontFamily: "var(--font-mono)",
-          }}
-        >
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Background: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.background}</span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Education: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.education}</span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Journey: </span>
-            <span style={{ color: "var(--color-text)" }}>
-              {PROFILE.journey} &#9992;&#65039;
-            </span>
-          </motion.div>
-          <motion.div variants={fadeInUp} style={{ fontSize: "var(--text-sm)" }}>
-            <span style={{ color: "var(--color-text-muted)" }}>Currently: </span>
-            <span style={{ color: "var(--color-text)" }}>{PROFILE.currently}</span>
-          </motion.div>
-        </motion.div>
-      </motion.div>
-
-      {/* Skills & Certifications — outside the card */}
-      <motion.div
-        variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
-        style={{
-          maxWidth: 720,
-          width: "100%",
-          marginTop: "var(--space-10)",
-          display: "flex",
-          flexDirection: "column",
-          gap: "var(--space-8)",
-        }}
-      >
-        {/* Core Competencies */}
-        <div>
-          <motion.h3
-            variants={fadeInUp}
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.1em",
-              marginBottom: "var(--space-4)",
-            }}
-          >
-            CORE COMPETENCIES
-          </motion.h3>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)" }}>
-            {SKILLS.map((skill) => (
-              <SkillBar
-                key={skill.name}
-                name={skill.name}
-                level={skill.level}
-                example={skill.example}
+            >
+              <span
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  background: "var(--green)",
+                  display: "inline-block",
+                  animation: "pulse-glow 2s ease-in-out infinite",
+                }}
               />
-            ))}
+              <span style={{ color: "var(--blue-bright)" }}>ACTIVE</span>
+            </span>
           </div>
-        </div>
 
-        {/* Certifications */}
-        <motion.div variants={fadeInUp}>
-          <h3
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.1em",
-              marginBottom: "var(--space-4)",
-            }}
-          >
-            CERTIFICATIONS
-          </h3>
-          <ul
-            style={{
-              listStyle: "none",
-              display: "flex",
-              flexDirection: "column",
-              gap: "var(--space-2)",
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-sm)",
-            }}
-          >
-            {PROFILE.certifications.map((cert) => (
-              <li
-                key={cert}
+          {/* Two-column layout: info left, skills+certs right */}
+          <div className="profile-grid">
+            {/* Left column — Profile fields */}
+            <div>
+              {/* Fields */}
+              <div
                 style={{
                   display: "flex",
-                  alignItems: "center",
+                  flexDirection: "column",
                   gap: "var(--space-3)",
-                  color: "var(--color-text)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                  marginBottom: "var(--space-6)",
+                  paddingBottom: "var(--space-6)",
+                  borderBottom: "1px solid var(--border-faint)",
                 }}
               >
-                <span
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Role: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.role}</span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Company: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.company}</span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Location: </span>
+                  <span style={{ color: "var(--text-primary)" }}>
+                    {PROFILE.location} {PROFILE.flag}
+                  </span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Target: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.target}</span>
+                </div>
+              </div>
+
+              {/* Info rows */}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "var(--space-3)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-sm)",
+                }}
+              >
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Background: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.background}</span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Education: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.education}</span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Journey: </span>
+                  <span style={{ color: "var(--text-primary)" }}>
+                    {PROFILE.journey}
+                  </span>
+                </div>
+                <div>
+                  <span style={{ color: "var(--text-muted)" }}>Currently: </span>
+                  <span style={{ color: "var(--text-primary)" }}>{PROFILE.currently}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right column — Skills + Certifications */}
+            <div
+              style={{
+                borderLeft: "1px solid var(--border-faint)",
+                paddingLeft: "var(--space-8)",
+              }}
+              className="profile-right-col"
+            >
+              {/* Skills */}
+              <div style={{ marginBottom: "var(--space-6)" }}>
+                <h3
                   style={{
-                    color: "var(--color-primary)",
+                    fontFamily: "var(--font-mono)",
                     fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    letterSpacing: "0.1em",
+                    marginBottom: "var(--space-4)",
                   }}
                 >
-                  &#x2713;
-                </span>
-                {cert}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      </motion.div>
+                  CORE COMPETENCIES
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-1)" }}>
+                  {SKILLS.map((skill, index) => (
+                    <SkillBar
+                      key={skill.name}
+                      name={skill.name}
+                      level={skill.level}
+                      example={skill.example}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Certifications */}
+              <div>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    letterSpacing: "0.1em",
+                    marginBottom: "var(--space-4)",
+                  }}
+                >
+                  CERTIFICATIONS
+                </h3>
+                <ul
+                  style={{
+                    listStyle: "none",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "var(--space-2)",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-sm)",
+                  }}
+                >
+                  {PROFILE.certifications.map((cert) => (
+                    <li
+                      key={cert}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "var(--space-3)",
+                        color: "var(--text-primary)",
+                      }}
+                    >
+                      <span style={{ color: "var(--blue-core)", fontSize: "var(--text-xs)" }}>
+                        &#x2713;
+                      </span>
+                      {cert}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Responsive: stack columns on mobile */}
+      <style jsx global>{`
+        .profile-grid {
+          display: grid;
+          grid-template-columns: 3fr 2fr;
+          gap: var(--space-8);
+        }
+        @media (max-width: 767px) {
+          .profile-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .profile-right-col {
+            border-left: none !important;
+            padding-left: 0 !important;
+            border-top: 1px solid var(--border-faint);
+            padding-top: var(--space-6);
+          }
+        }
+      `}</style>
     </section>
   );
 }

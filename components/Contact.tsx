@@ -1,166 +1,166 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { LINKS } from "@/lib/constants";
-import { fadeInUp, staggerContainer } from "@/lib/animations";
 
-export default function Contact({ className }: { className?: string }) {
+export default function Contact() {
   return (
-    <section
-      id="contact"
-      className={`py-20 md:py-32 px-6${className ? ` ${className}` : ""}`}
-      style={{
-        borderTop: "1px solid var(--color-divider)",
-      }}
-    >
-      <div className="max-w-3xl mx-auto text-center">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+    <section id="contact" className="contact-glow">
+      <div style={{ maxWidth: "640px", margin: "0 auto", textAlign: "center" }}>
+        {/* Section number + label */}
+        <div className="section-header reveal">
+          <span className="section-number">06</span>
+        </div>
+
+        {/* Headline — Cal Sans, NOT --text-hero */}
+        <h2
+          className="reveal"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-2xl)",
+            fontWeight: 700,
+            color: "var(--text-primary)",
+            lineHeight: 1.2,
+            letterSpacing: "-0.02em",
+            marginBottom: "var(--space-6)",
+          }}
         >
-          {/* Section label */}
-          <motion.p
-            className="mb-4"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-accent)",
-            }}
-            variants={fadeInUp}
-          >
-            // 06 —
-          </motion.p>
+          Let&apos;s Talk.
+        </h2>
 
-          {/* Headline */}
-          <motion.h2
-            className="font-extrabold leading-tight mb-6"
+        {/* Sub-copy */}
+        <p
+          className="reveal"
+          style={{
+            maxWidth: "44ch",
+            margin: "0 auto var(--space-10)",
+            fontSize: "var(--text-lg)",
+            color: "var(--text-secondary)",
+            lineHeight: 1.7,
+            fontFamily: "var(--font-body)",
+            fontWeight: 400,
+            whiteSpace: "pre-line",
+          }}
+        >
+          {"I don't wait for inbound.\nI research, personalize, and close.\n\nIf you're scaling an enterprise sales team,\nlet's use 20 minutes well."}
+        </p>
+
+        {/* CTA row — 2 CTAs */}
+        <div
+          className="reveal"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "var(--space-4)",
+            marginBottom: "var(--space-8)",
+          }}
+        >
+          {/* Book a Call — solid primary */}
+          <a
+            href={LINKS.calendly}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-magnetic inline-flex items-center justify-center no-underline"
             style={{
-              fontSize: "var(--text-2xl)",
+              background: "var(--blue-core)",
+              color: "#ffffff",
               fontFamily: "var(--font-body)",
-              color: "var(--color-text)",
+              fontSize: "var(--text-sm)",
+              fontWeight: 500,
+              letterSpacing: "0.01em",
+              minHeight: "44px",
+              padding: "0.75rem 1.5rem",
+              borderRadius: "6px",
+              border: "none",
+              transition: "transform 180ms ease, box-shadow 180ms ease",
             }}
-            variants={fadeInUp}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.boxShadow = "0 0 24px rgba(37, 99, 235, 0.4)";
+              el.style.transform = "translateY(-1px)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.boxShadow = "none";
+              el.style.transform = "translateY(0)";
+            }}
           >
-            Ready to Add a Pipeline Builder to Your Team?
-          </motion.h2>
+            Book a Call &rarr;
+          </a>
 
-          {/* Sub-copy */}
-          <motion.p
-            className="mx-auto mb-10 leading-relaxed"
+          {/* Connect on LinkedIn — ghost */}
+          <a
+            href={LINKS.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-magnetic inline-flex items-center justify-center no-underline"
             style={{
-              maxWidth: "50ch",
-              fontSize: "var(--text-base)",
-              color: "var(--color-text-muted)",
-              whiteSpace: "pre-line",
+              background: "transparent",
+              color: "var(--text-secondary)",
+              fontFamily: "var(--font-body)",
+              fontSize: "var(--text-sm)",
+              fontWeight: 500,
+              minHeight: "44px",
+              padding: "0.75rem 1.5rem",
+              borderRadius: "6px",
+              border: "1px solid var(--border-subtle)",
+              transition: "transform 180ms ease, border-color 180ms ease, color 180ms ease",
             }}
-            variants={fadeInUp}
-          >
-            {"I don\u2019t wait for inbound. I research, personalize, and close.\nIf you\u2019re building an enterprise sales team \u2014 let\u2019s talk for 20 minutes."}
-          </motion.p>
-
-          {/* Social proof line */}
-          <motion.p
-            className="mb-10"
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "var(--text-xs)",
-              color: "var(--color-accent)",
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "var(--border-visible)";
+              el.style.color = "var(--text-primary)";
+              el.style.transform = "translateY(-1px)";
             }}
-            variants={fadeInUp}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "var(--border-subtle)";
+              el.style.color = "var(--text-secondary)";
+              el.style.transform = "translateY(0)";
+            }}
           >
-            170% over quota. Top performer at OpenText.
-          </motion.p>
+            Connect on LinkedIn
+          </a>
+        </div>
 
-          {/* CTA row — 2 CTAs only */}
-          <motion.div
-            className="flex flex-wrap items-center justify-center gap-3 mb-10"
-            variants={fadeInUp}
-          >
-            {/* Book a Call — solid primary */}
-            <a
-              href={LINKS.calendly}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-md px-6 text-white font-semibold transition-transform duration-180"
-              style={{
-                minHeight: "44px",
-                background: "var(--color-primary)",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.02)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "scale(1)")
-              }
-            >
-              Book a Call
-            </a>
-
-            {/* Connect on LinkedIn — ghost */}
-            <a
-              href={LINKS.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center rounded-md px-6 font-semibold transition-transform duration-180"
-              style={{
-                minHeight: "44px",
-                border: "1px solid var(--color-border)",
-                color: "var(--color-text)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = "scale(1.02)";
-                e.currentTarget.style.borderColor = "var(--color-primary)";
-                e.currentTarget.style.color = "var(--color-primary)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.borderColor = "var(--color-border)";
-                e.currentTarget.style.color = "var(--color-text)";
-              }}
-            >
-              Connect on LinkedIn
-            </a>
-          </motion.div>
-
-          {/* Email as text */}
-          <motion.div
-            variants={fadeInUp}
-          >
-            <a
-              href={`mailto:${LINKS.email}`}
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--text-xs)",
-                color: "var(--color-text-faint)",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "var(--color-accent)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "var(--color-text-faint)";
-              }}
-            >
-              {LINKS.email}
-            </a>
-          </motion.div>
-
-          {/* Response time */}
-          <motion.p
-            className="mt-4 mb-12"
+        {/* Email — mailto only, no raw address visible */}
+        <div className="reveal" style={{ marginBottom: "var(--space-4)" }}>
+          <a
+            href={`mailto:${LINKS.email}`}
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: "var(--text-xs)",
-              color: "var(--color-text-faint)",
+              color: "var(--text-ghost)",
+              textDecoration: "none",
+              transition: "color 180ms ease",
             }}
-            variants={fadeInUp}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "var(--blue-bright)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "var(--text-ghost)";
+            }}
           >
-            Response time: usually same day.
-          </motion.p>
+            Email Me &rarr;
+          </a>
+        </div>
 
-        </motion.div>
+        {/* Response time */}
+        <p
+          className="reveal"
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "var(--text-xs)",
+            color: "var(--text-ghost)",
+            borderTop: "1px solid var(--border-faint)",
+            paddingTop: "var(--space-6)",
+            maxWidth: "200px",
+            margin: "0 auto",
+          }}
+        >
+          Response time: usually same day.
+        </p>
       </div>
     </section>
   );

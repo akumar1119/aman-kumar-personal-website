@@ -41,6 +41,9 @@ export const metadata: Metadata = {
     description:
       "$6M pipeline. 170.4% SQL attainment. Full-cycle B2B SaaS sales. Targeting AE roles.",
   },
+  other: {
+    "theme-color": "#080b14",
+  },
 };
 
 export default function RootLayout({
@@ -50,6 +53,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`}>
+      <head>
+        {/* Cal Sans — distinctive display font via CDN */}
+        <link
+          href="https://cdn.jsdelivr.net/npm/@fontsource/cal-sans@5.0.1/index.css"
+          rel="stylesheet"
+        />
+        <meta name="theme-color" content="#080b14" />
+      </head>
       <body className="min-h-screen">
         <a href="#main" className="skip-link">
           Skip to content
