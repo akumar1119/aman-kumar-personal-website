@@ -2,7 +2,7 @@
 
 A dark, terminal-inspired portfolio website built with Next.js. Designed to feel like reading a sales operations dashboard — because that's what I do.
 
-**Live:** Coming soon
+**Live:**
 
 ## What's Inside
 
