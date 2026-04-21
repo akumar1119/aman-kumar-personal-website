@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import LoadingScreen from "@/components/LoadingScreen";
+import ColdCallOverlay from "@/components/ColdCallOverlay";
 import Navigation from "@/components/Navigation";
 import ScrollProgress from "@/components/ScrollProgress";
 import SpotlightCursor from "@/components/CursorTrail";
@@ -16,7 +16,7 @@ import Contact from "@/components/Contact";
 import { useReveal } from "@/lib/useReveal";
 import { useMagneticButtons } from "@/lib/useMagneticButtons";
 
-function AppContent() {
+function AppContent({ heroVisible }: { heroVisible: boolean }) {
   useReveal();
   useMagneticButtons();
 
@@ -27,7 +27,7 @@ function AppContent() {
       <EasterEgg />
       <Navigation />
       <main id="main">
-        <Hero />
+        <Hero visible={heroVisible} />
         <NumbersBar />
         <ProfileDossier />
         <CareerPipeline />
@@ -91,22 +91,44 @@ function AppContent() {
 }
 
 export default function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (sessionStorage.getItem("aman-loaded")) {
-      setIsLoading(false);
-    }
-  }, []);
+  const [showOverlay, setShowOverlay] = useState<boolean | null>(null);
+  const [heroVisible, setHeroVisible] = useState(false);
 
   const handleComplete = useCallback(() => {
     sessionStorage.setItem("aman-loaded", "true");
-    setIsLoading(false);
+    setShowOverlay(false);
   }, []);
 
-  return isLoading ? (
-    <LoadingScreen onComplete={handleComplete} />
-  ) : (
-    <AppContent />
+  const handleShatter = useCallback(() => {
+    setHeroVisible(true);
+  }, []);
+
+  useEffect(() => {
+    if (sessionStorage.getItem("aman-loaded")) {
+      setShowOverlay(false);
+      setHeroVisible(true);
+    } else {
+      setShowOverlay(true);
+    }
+  }, []);
+
+  return (
+    <>
+      {showOverlay === null && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "#050508",
+            zIndex: 9999,
+          }}
+        />
+      )}
+      {showOverlay && (
+        <ColdCallOverlay onComplete={handleComplete} onShatter={handleShatter} />
+      )}
+      <AppContent heroVisible={heroVisible} />
+    </>
   );
 }

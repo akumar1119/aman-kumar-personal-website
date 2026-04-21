@@ -6,7 +6,11 @@ import { LINKS } from "@/lib/constants";
 import { fadeInLeft, fadeInUp, staggerContainer } from "@/lib/animations";
 import Image from "next/image";
 
-export default function Hero() {
+interface HeroProps {
+  visible?: boolean;
+}
+
+export default function Hero({ visible = false }: HeroProps) {
   const [scrollY, setScrollY] = useState(0);
   const heroRef = useRef<HTMLElement>(null);
 
@@ -26,8 +30,9 @@ export default function Hero() {
   return (
     <section
       id="home"
+      data-hero
       ref={heroRef}
-      className="relative flex items-center overflow-hidden"
+      className={`${visible ? "hero-reveal" : "hero-hidden"} relative flex items-center overflow-hidden`}
       style={{
         minHeight: "100dvh",
         background: "var(--bg-base)",
