@@ -552,3 +552,210 @@ section > *:last-child {
 #home, #numbers, #profile, #career, #work, #content, #contact {
   scroll-margin-top: 72px;
 }
+
+/* ── Cold Call Overlay ── */
+.cold-call-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #050508;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 450ms ease;
+}
+.cold-call-overlay.cold-call-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+.cold-call-card {
+  width: min(340px, 88vw);
+  background: linear-gradient(145deg, #111827 0%, #0d1117 60%, #0a0f1a 100%);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 36px;
+  padding: 20px 24px 32px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.92) translateY(8px);
+  animation: cold-call-card-enter 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow:
+    0 0 0 1px rgba(148, 163, 184, 0.06),
+    0 -1px 0 0 rgba(37, 99, 235, 0.35),
+    0 32px 80px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+@keyframes cold-call-card-enter {
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.cold-call-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+.cold-call-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  color: rgba(148, 163, 184, 0.6);
+  font: 500 11px/1 var(--font-mono);
+}
+.cold-call-signal {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+.cold-call-signal-bar {
+  width: 3px;
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 1px;
+}
+.cold-call-signal-bar:nth-child(1) { height: 4px; }
+.cold-call-signal-bar:nth-child(2) { height: 6px; }
+.cold-call-signal-bar:nth-child(3) { height: 9px; }
+.cold-call-signal-bar:nth-child(4) { height: 12px; background: rgba(148, 163, 184, 0.25); }
+.cold-call-time { font: 500 11px/1 var(--font-mono); color: rgba(148, 163, 184, 0.6); }
+.cold-call-battery { display: flex; align-items: center; color: rgba(148, 163, 184, 0.6); }
+.cold-call-caller-info { text-align: center; margin-bottom: 24px; }
+.cold-call-caller-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a2236, #0d1a2e);
+  border: 2px solid rgba(37, 99, 235, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
+}
+.cold-call-caller-initials {
+  font: 700 22px/1 var(--font-mono);
+  color: #3b82f6;
+  letter-spacing: 0.05em;
+}
+.cold-call-live-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid #0d1117;
+  animation: cold-call-pulse-dot 1.2s ease infinite;
+}
+@keyframes cold-call-pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+.cold-call-calling-label {
+  font: 400 11px/1 var(--font-mono);
+  color: rgba(148, 163, 184, 0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cold-call-caller-name {
+  font: 700 26px/1.1 var(--font-display);
+  color: #f1f5f9;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+.cold-call-caller-subtitle {
+  font: 400 12px/1 var(--font-mono);
+  color: rgba(148, 163, 184, 0.4);
+  letter-spacing: 0.05em;
+}
+.cold-call-waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 36px;
+  margin-bottom: 28px;
+}
+.cold-call-wave-bar {
+  width: 3px;
+  border-radius: 2px;
+  background: #2563eb;
+  height: 4px;
+  transition: height 80ms ease;
+}
+.cold-call-waveform.cold-call-animating .cold-call-wave-bar {
+  animation: cold-call-wave-pulse var(--duration, 0.6s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes cold-call-wave-pulse {
+  from { height: 4px; opacity: 0.4; }
+  to { height: var(--peak, 24px); opacity: 1; }
+}
+.cold-call-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  margin-bottom: 16px;
+}
+.cold-call-btn-decline,
+.cold-call-btn-accept {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 150ms ease, box-shadow 150ms ease;
+}
+.cold-call-btn-decline {
+  background: #ef4444;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+.cold-call-btn-accept {
+  background: #10b981;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+  animation: cold-call-accept-pulse 1s ease-in-out infinite;
+}
+@keyframes cold-call-accept-pulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3), 0 0 0 0 rgba(16, 185, 129, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3), 0 0 0 12px rgba(16, 185, 129, 0); }
+}
+.cold-call-btn-accept.cold-call-flash {
+  animation: none;
+  background: #ffffff;
+  box-shadow: 0 4px 40px rgba(255, 255, 255, 0.6);
+  transform: scale(1.15);
+}
+.cold-call-swipe-hint {
+  text-align: center;
+  font: 400 11px/1 var(--font-mono);
+  color: rgba(148, 163, 184, 0.25);
+  letter-spacing: 0.1em;
+}
+.cold-call-fragment {
+  position: fixed;
+  background: linear-gradient(135deg, #111827, #0d1117);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  border-radius: 4px;
+  z-index: 10000;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.hero-hidden { opacity: 0; }
+.hero-reveal { animation: cold-call-hero-fade-in 400ms ease forwards; }
+@keyframes cold-call-hero-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cold-call-overlay { display: none !important; }
+  .hero-hidden { opacity: 1 !important; }
+}
