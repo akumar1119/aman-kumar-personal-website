@@ -111,6 +111,7 @@ export default function ColdCallOverlay({ onComplete, onShatter }: ColdCallOverl
 
   return (
     <div ref={overlayRef} className="cold-call-overlay">
+      <p className="cold-call-expert-label">Cold Calling Expert</p>
       <div ref={cardRef} className="cold-call-card">
         {/* Top bar */}
         <div className="cold-call-top-bar">
