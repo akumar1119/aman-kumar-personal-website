@@ -15,6 +15,7 @@ import IntelFeed from "@/components/IntelFeed";
 import Contact from "@/components/Contact";
 import { useReveal } from "@/lib/useReveal";
 import { useMagneticButtons } from "@/lib/useMagneticButtons";
+import ThemeProvider from "@/components/ThemeProvider";
 
 function AppContent({ heroVisible }: { heroVisible: boolean }) {
   useReveal();
@@ -113,14 +114,14 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <ThemeProvider>
       {showOverlay === null && (
         <div
           aria-hidden="true"
           style={{
             position: "fixed",
             inset: 0,
-            background: "#050508",
+            background: "var(--splash-bg)",
             zIndex: 9999,
           }}
         />
@@ -129,6 +130,6 @@ export default function Home() {
         <ColdCallOverlay onComplete={handleComplete} onShatter={handleShatter} />
       )}
       <AppContent heroVisible={heroVisible} />
-    </>
+    </ThemeProvider>
   );
 }

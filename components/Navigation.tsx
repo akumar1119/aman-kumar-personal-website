@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { NAV_LINKS, LINKS } from "@/lib/constants";
 import { House, BarChart3, Briefcase, Layers, Mail } from "lucide-react";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 const DESKTOP_LINKS = NAV_LINKS;
 const MOBILE_NAV_ITEMS = [
@@ -75,7 +76,7 @@ export default function Navigation() {
           display: "flex",
           alignItems: "center",
           paddingInline: "clamp(1.5rem, 5vw, 4rem)",
-          background: "rgba(8, 11, 20, 0.8)",
+          background: "var(--nav-bg)",
           backdropFilter: "blur(20px) saturate(180%)",
           WebkitBackdropFilter: "blur(20px) saturate(180%)",
           borderBottom: "1px solid var(--border-faint)",
@@ -118,7 +119,7 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Right: Social icons + Download Resume + Performance Dashboard */}
+          {/* Right: Social icons + Download Resume + Theme toggle */}
           <div className="flex items-center gap-3">
             {/* GitHub */}
             <a
@@ -233,6 +234,7 @@ export default function Navigation() {
             >
               Download Resume &uarr;
             </a>
+            <ThemeToggle />
           </div>
         </div>
       </nav>
@@ -243,7 +245,7 @@ export default function Navigation() {
         style={{
           backdropFilter: "blur(20px) saturate(180%)",
           WebkitBackdropFilter: "blur(20px) saturate(180%)",
-          background: "rgba(8, 11, 20, 0.9)",
+          background: "var(--nav-bg-mobile)",
           borderTop: "1px solid var(--border-faint)",
         }}
         initial={{ y: 80, opacity: 0 }}
@@ -280,6 +282,9 @@ export default function Navigation() {
               </span>
             </button>
           ))}
+          <div className="flex flex-col items-center gap-1">
+            <ThemeToggle />
+          </div>
         </div>
       </motion.nav>
     </>

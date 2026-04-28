@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
       <head>
         {/* Cal Sans — distinctive display font via CDN */}
         <link
@@ -60,6 +60,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <meta name="theme-color" content="#080b14" />
+        {/* Flash-prevention: set data-theme before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('aman-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);if(t==='light'){var m=document.querySelector('meta[name="theme-color"]');if(m)m.content='#f8fafc'}}else if(window.matchMedia('(prefers-color-scheme:light)').matches){document.documentElement.setAttribute('data-theme','light');var m=document.querySelector('meta[name="theme-color"]');if(m)m.content='#f8fafc'}}catch(e){}})()`,
+          }}
+        />
       </head>
       <body className="min-h-screen">
         <a href="#main" className="skip-link">

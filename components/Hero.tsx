@@ -97,7 +97,7 @@ export default function Hero({ visible = false }: HeroProps) {
             fontSize: "var(--text-hero)",
             letterSpacing: "-0.03em",
             lineHeight: 1.05,
-            background: "linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%)",
+            background: "var(--hero-name-gradient)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
             WebkitTextFillColor: "transparent",

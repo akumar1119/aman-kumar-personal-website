@@ -78,6 +78,84 @@
 
   /* Layout */
   --content-max-width: 1100px;
+
+  /* Nav backdrop */
+  --nav-bg: rgba(8, 11, 20, 0.8);
+  --nav-bg-mobile: rgba(8, 11, 20, 0.9);
+
+  /* Cold call overlay */
+  --cold-call-bg: #050508;
+  --cold-call-card-bg: linear-gradient(145deg, #111827 0%, #0d1117 60%, #0a0f1a 100%);
+  --cold-call-card-shadow: 0 0 0 1px rgba(148, 163, 184, 0.06), 0 -1px 0 0 rgba(37, 99, 235, 0.35), 0 32px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --cold-call-avatar-bg: linear-gradient(135deg, #1a2236, #0d1a2e);
+  --cold-call-name-color: #f1f5f9;
+  --cold-call-dot-border: #0d1117;
+  --cold-call-fragment-bg: linear-gradient(135deg, #111827, #0d1117);
+  --cold-call-flash-shadow: 0 4px 40px rgba(255, 255, 255, 0.6);
+
+  /* Hero name gradient */
+  --hero-name-gradient: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+
+  /* Grid pattern lines */
+  --grid-line-color: rgba(255, 255, 255, 0.02);
+
+  /* Spotlight cursor */
+  --spotlight-color: rgba(37, 99, 235, 0.04);
+
+  /* Glow card hover shadow */
+  --glow-card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 40px rgba(37, 99, 235, 0.15);
+
+  /* Splash screen */
+  --splash-bg: #050508;
+}
+
+/* ── Light theme overrides ── */
+[data-theme="light"] {
+  --bg-void: #ffffff;
+  --bg-base: #f8fafc;
+  --bg-surface: #f1f5f9;
+  --bg-elevated: #e2e8f0;
+  --bg-highlight: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-ghost: #94a3b8;
+
+  --border-faint: rgba(15, 23, 42, 0.06);
+  --border-subtle: rgba(15, 23, 42, 0.10);
+  --border-visible: rgba(15, 23, 42, 0.18);
+  --border-accent: rgba(37, 99, 235, 0.35);
+
+  --blue-glow: rgba(37, 99, 235, 0.08);
+  --blue-glow-strong: rgba(37, 99, 235, 0.15);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
+  --shadow-glow: 0 0 30px rgba(37, 99, 235, 0.10);
+
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --nav-bg-mobile: rgba(248, 250, 252, 0.92);
+
+  --cold-call-bg: #f8fafc;
+  --cold-call-card-bg: linear-gradient(145deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+  --cold-call-card-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 -1px 0 0 rgba(37, 99, 235, 0.2), 0 32px 80px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --cold-call-avatar-bg: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  --cold-call-name-color: #0f172a;
+  --cold-call-dot-border: #f1f5f9;
+  --cold-call-fragment-bg: linear-gradient(135deg, #ffffff, #f1f5f9);
+  --cold-call-flash-shadow: 0 4px 40px rgba(255, 255, 255, 0.8);
+
+  --hero-name-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+
+  --grid-line-color: rgba(15, 23, 42, 0.04);
+
+  --spotlight-color: rgba(37, 99, 235, 0.06);
+
+  --glow-card-hover-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 40px rgba(37, 99, 235, 0.10);
+
+  --splash-bg: #f8fafc;
 }
 
 @theme inline {
@@ -116,7 +194,7 @@ body::before {
   inset: 0;
   background: radial-gradient(
     600px circle at var(--cursor-x, 50%) var(--cursor-y, 50%),
-    rgba(37, 99, 235, 0.04),
+    var(--spotlight-color),
     transparent 40%
   );
   pointer-events: none;
@@ -267,8 +345,7 @@ section > *:last-child {
 .glow-card:hover {
   border-color: var(--border-accent);
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
-              0 0 40px rgba(37, 99, 235, 0.15);
+  box-shadow: var(--glow-card-hover-shadow);
 }
 .glow-card:hover::before {
   opacity: 1;
@@ -366,15 +443,15 @@ section > *:last-child {
       90deg,
       transparent,
       transparent 59px,
-      rgba(255, 255, 255, 0.02) 59px,
-      rgba(255, 255, 255, 0.02) 60px
+      var(--grid-line-color) 59px,
+      var(--grid-line-color) 60px
     ),
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 59px,
-      rgba(255, 255, 255, 0.02) 59px,
-      rgba(255, 255, 255, 0.02) 60px
+      var(--grid-line-color) 59px,
+      var(--grid-line-color) 60px
     );
   pointer-events: none;
   z-index: 0;
@@ -558,7 +635,7 @@ section > *:last-child {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #050508;
+  background: var(--cold-call-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -570,7 +647,7 @@ section > *:last-child {
 }
 .cold-call-card {
   width: min(340px, 88vw);
-  background: linear-gradient(145deg, #111827 0%, #0d1117 60%, #0a0f1a 100%);
+  background: var(--cold-call-card-bg);
   border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 36px;
   padding: 20px 24px 32px;
@@ -579,11 +656,7 @@ section > *:last-child {
   opacity: 0;
   transform: scale(0.92) translateY(8px);
   animation: cold-call-card-enter 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  box-shadow:
-    0 0 0 1px rgba(148, 163, 184, 0.06),
-    0 -1px 0 0 rgba(37, 99, 235, 0.35),
-    0 32px 80px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  box-shadow: var(--cold-call-card-shadow);
 }
 @keyframes cold-call-card-enter {
   to { opacity: 1; transform: scale(1) translateY(0); }
@@ -626,7 +699,7 @@ section > *:last-child {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1a2236, #0d1a2e);
+  background: var(--cold-call-avatar-bg);
   border: 2px solid rgba(37, 99, 235, 0.3);
   display: flex;
   align-items: center;
@@ -648,7 +721,7 @@ section > *:last-child {
   height: 14px;
   border-radius: 50%;
   background: #10b981;
-  border: 2px solid #0d1117;
+  border: 2px solid var(--cold-call-dot-border);
   animation: cold-call-pulse-dot 1.2s ease infinite;
 }
 @keyframes cold-call-pulse-dot {
@@ -664,7 +737,7 @@ section > *:last-child {
 }
 .cold-call-caller-name {
   font: 700 26px/1.1 var(--font-display);
-  color: #f1f5f9;
+  color: var(--cold-call-name-color);
   letter-spacing: -0.02em;
   margin-bottom: 6px;
 }
@@ -731,7 +804,7 @@ section > *:last-child {
 .cold-call-btn-accept.cold-call-flash {
   animation: none;
   background: #ffffff;
-  box-shadow: 0 4px 40px rgba(255, 255, 255, 0.6);
+  box-shadow: var(--cold-call-flash-shadow);
   transform: scale(1.15);
 }
 .cold-call-swipe-hint {
@@ -742,7 +815,7 @@ section > *:last-child {
 }
 .cold-call-fragment {
   position: fixed;
-  background: linear-gradient(135deg, #111827, #0d1117);
+  background: var(--cold-call-fragment-bg);
   border: 1px solid rgba(148, 163, 184, 0.08);
   border-radius: 4px;
   z-index: 10000;
